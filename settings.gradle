@@ -1,1 +1,1 @@
-include ':app', ':exolibrary', ':player'
+include ':app', ':player'

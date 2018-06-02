@@ -28,7 +28,6 @@ import android.widget.PopupWindow;
 import com.bugsnag.android.Bugsnag;
 import com.bugsnag.android.Severity;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.devbrackets.android.exomedia.util.ResourceUtil;
 import com.orhanobut.logger.Logger;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.u91porn.BuildConfig;
@@ -41,6 +40,7 @@ import com.u91porn.ui.MvpFragment;
 import com.u91porn.ui.porn91video.Main91PronVideoFragment;
 import com.u91porn.utils.AnimationUtils;
 import com.u91porn.utils.FragmentUtils;
+import com.u91porn.utils.ResourceUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

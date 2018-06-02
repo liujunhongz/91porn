@@ -2,7 +2,6 @@ package com.u91porn.ui.pigav.playpigav;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -12,13 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.devbrackets.android.exomedia.listener.OnPreparedListener;
-import com.flymegoc.exolibrary.widget.ExoVideoControlsMobile;
-import com.flymegoc.exolibrary.widget.ExoVideoView;
 import com.jaeger.library.StatusBarUtil;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.sdsmdg.tastytoast.TastyToast;
@@ -36,25 +34,27 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import tv.lycam.player.StandardPlayer;
+import tv.lycam.player.utils.OrientationUtils;
 
 /**
  * @author flymegoc
  */
-public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPresenter> implements PlayPigAvView, OnPreparedListener {
+public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPresenter> implements PlayPigAvView {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.video_view)
-    ExoVideoView videoPlayer;
+    StandardPlayer videoPlayer;
     @BindView(R.id.play_container)
     FrameLayout playContainer;
-    private ExoVideoControlsMobile videoControlsMobile;
-    private boolean isPauseByActivityEvent = false;
 
     private AlertDialog alertDialog;
-
+    OrientationUtils mOrientationUtils;
     @Inject
     protected PlayPigAvPresenter playPigAvPresenter;
+    private ImageView mThumbnailView;
+    private View mTitleContainerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +63,14 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
         ButterKnife.bind(this);
         setVideoViewHeight(playContainer);
         initDialog();
-        videoControlsMobile = (ExoVideoControlsMobile) videoPlayer.getVideoControls();
-        videoPlayer.setOnPreparedListener(this);
-        videoControlsMobile.setOnBackButtonClickListener(new ExoVideoControlsMobile.OnBackButtonClickListener() {
+        mTitleContainerView = View.inflate(this, R.layout.item_top_default, null);
+        videoPlayer.setTopContainerView(mTitleContainerView);
+        mThumbnailView = new ImageView(this);
+        videoPlayer.setThumbImageView(mThumbnailView);
+
+        mTitleContainerView.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onBackClick(View view) {
+            public void onClick(View v) {
                 onBackPressed();
             }
         });
@@ -77,10 +80,12 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
         } else {
             showMessage("参数错误，无法播放", TastyToast.WARNING);
         }
+        mOrientationUtils = new OrientationUtils(this);
     }
 
     private void parseVideoUrl(PigAv pigAv) {
-        videoControlsMobile.setTitle(pigAv.getTitle());
+        TextView titleView = mTitleContainerView.findViewById(R.id.title);
+        titleView.setText(pigAv.getTitle());
         presenter.parseVideoUrl(pigAv.getContentUrl(), pigAv.getpId(), false);
     }
 
@@ -97,19 +102,10 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
         playerView.setLayoutParams(layoutParams);
     }
 
-
-    @Override
-    public void onPrepared() {
-        videoPlayer.start();
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        if (!videoPlayer.isPlaying() && isPauseByActivityEvent) {
-            isPauseByActivityEvent = false;
-            videoPlayer.start();
-        }
+        videoPlayer.restorePlayerState();
     }
 
     @NonNull
@@ -122,22 +118,26 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
 
     @Override
     protected void onPause() {
-        videoPlayer.pause();
-        isPauseByActivityEvent = true;
+        videoPlayer.savePlayerState();
         super.onPause();
 
     }
 
     @Override
     public void onBackPressed() {
-        if (videoControlsMobile.onBackPressed()) {
-            super.onBackPressed();
+        if (mOrientationUtils != null && mOrientationUtils.getScreenType() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            mOrientationUtils.resolveByClick();
+            return;
         }
+        super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
-        videoPlayer.release();
+        if (mOrientationUtils != null) {
+            mOrientationUtils.releaseListener();
+        }
+        videoPlayer.destroy();
         super.onDestroy();
     }
 
@@ -155,7 +155,8 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
     @Override
     public void playVideo(PigAvVideo pigAvVideo) {
         String url = pigAvVideo.getFile();
-        Glide.with(context).load(pigAvVideo.getImage()).into(videoPlayer.getPreviewImageView());
+        Glide.with(context).load(pigAvVideo.getImage()).into(mThumbnailView);
+
         if (TextUtils.isEmpty(url) && pigAvVideo.getSources() != null && pigAvVideo.getSources().size() > 0) {
             url = pigAvVideo.getSources().get(0).getFile();
         }
@@ -164,7 +165,9 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
             return;
         }
         String proxyUrl = httpProxyCacheServer.getProxyUrl(url);
-        videoPlayer.setVideoURI(Uri.parse(proxyUrl));
+
+        videoPlayer.setVideoPath(proxyUrl);
+        videoPlayer.start();
     }
 
     @Override
@@ -182,7 +185,7 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
                     return;
                 }
                 videoPlayer.pause();
-                videoPlayer.reset();
+                videoPlayer.stop();
                 parseVideoUrl(pigAv);
             }
         });

@@ -11,6 +11,11 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+
+        ndk {
+//            abiFilters 'armeabi-v7a', 'arm64-v8a'
+            abiFilter 'armeabi-v7a'
+        }
     }
 
     buildTypes {
@@ -79,7 +84,7 @@ dependencies {
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     implementation 'com.orhanobut:logger:2.1.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
-    implementation 'cn.jzvd:jiaozivideoplayer:6.2.4'
+    //implementation 'cn.jzvd:jiaozivideoplayer:6.2.4'
     // Plain MVP'
     implementation 'com.hannesdorfmann.mosby3:viewstate:3.1.0'
     implementation 'com.trello.rxlifecycle2:rxlifecycle:2.2.1'
@@ -126,6 +131,6 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
 
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
-    implementation project(':exolibrary')
-//    implementation project(':player')
+//    implementation project(':exolibrary')
+    implementation project(':player')
 }

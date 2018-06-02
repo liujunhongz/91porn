@@ -1,10 +1,8 @@
 package com.u91porn.ui.download;
 
 
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +28,7 @@ import com.u91porn.data.model.UnLimit91PornItem;
 import com.u91porn.service.DownloadVideoService;
 import com.u91porn.ui.MvpFragment;
 import com.u91porn.utils.DownloadManager;
+import com.u91porn.utils.PlaybackEngine;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -153,20 +152,24 @@ public class FinishedFragment extends MvpFragment<DownloadView, DownloadPresente
             } else {
                 uri = Uri.fromFile(file);
             }
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-//            intent.setDataAndType(uri, "pigAvVideoUrl/mp4");
-            intent.setDataAndType(uri, "video/mp4");
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            intent.setDataAndType(uri, "91porn/mp4");
+//            intent.setDataAndType(uri, "video/mp4");
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            String title = unLimit91PornItem.getTitle();
+            String path = uri.toString();
 
-            PackageManager pm = context.getPackageManager();
-            ComponentName cn = intent.resolveActivity(pm);
-            if (cn == null) {
-                showMessage("你手机上未安装任何可以播放此视频的播放器！", TastyToast.INFO);
-                return;
-            }
-            startActivity(intent);
+            PlaybackEngine.play(context, title, path);
+
+//            PackageManager pm = context.getPackageManager();
+//            ComponentName cn = intent.resolveActivity(pm);
+//            if (cn == null) {
+//                showMessage("你手机上未安装任何可以播放此视频的播放器！", TastyToast.INFO);
+//                return;
+//            }
+//            startActivity(intent);
         } else {
             showReDownloadFileDialog(unLimit91PornItem);
         }
