@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
-import com.orhanobut.logger.Logger;
 import com.u91porn.cookie.SetCookieCache;
 import com.u91porn.cookie.SharedPrefsCookiePersistor;
 import com.u91porn.data.network.Api;
@@ -35,6 +34,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+import timber.log.Timber;
 
 /**
  * @author flymegoc
@@ -69,10 +69,11 @@ public class ApiServiceModule {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(@NonNull String message) {
-                Logger.t(TAG).d("HttpLog:" + message);
+                // Logger.t(TAG).d("HttpLog:" + message);
+                Timber.d(message);
             }
         });
-        logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         return logging;
     }
 

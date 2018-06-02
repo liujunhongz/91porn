@@ -1,5 +1,6 @@
 package com.u91porn.ui.download;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.u91porn.R;
 
 import tv.lycam.player.StandardPlayer;
+import tv.lycam.player.utils.CommonUtil;
 import tv.lycam.player.utils.OrientationUtils;
 
 /**
@@ -25,17 +27,19 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     public static final String PATH = "path";
     OrientationUtils mOrientationUtils;
     private StandardPlayer videoPlayer;
+    private Context context;
+    private int mSystemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_play);
-
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        getWindow().getDecorView().setSystemUiVisibility(mSystemUiVisibility);
         String title = getIntent().getStringExtra(TITLE);
         String filePath = getIntent().getStringExtra(PATH);
 
@@ -46,6 +50,18 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
         TextView titleView = titleContainerView.findViewById(R.id.title);
         titleView.setText(title);
+
+        titleContainerView.findViewById(R.id.fullscreen).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOrientationUtils.resolveByClick();
+                if (mOrientationUtils.getScreenType() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                    CommonUtil.showNavKey(context, mSystemUiVisibility);
+                } else {
+                    CommonUtil.hideNavKey(context);
+                }
+            }
+        });
 
         videoPlayer.setTopContainerView(titleContainerView);
 

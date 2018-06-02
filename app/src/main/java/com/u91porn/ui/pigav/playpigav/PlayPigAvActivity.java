@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tv.lycam.player.StandardPlayer;
+import tv.lycam.player.utils.CommonUtil;
 import tv.lycam.player.utils.OrientationUtils;
 
 /**
@@ -48,7 +49,11 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
     StandardPlayer videoPlayer;
     @BindView(R.id.play_container)
     FrameLayout playContainer;
-
+    private int mSystemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
     private AlertDialog alertDialog;
     OrientationUtils mOrientationUtils;
     @Inject
@@ -61,7 +66,7 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_pig_av);
         ButterKnife.bind(this);
-        setVideoViewHeight(playContainer);
+        //setVideoViewHeight(playContainer);
         initDialog();
         mTitleContainerView = View.inflate(this, R.layout.item_top_default, null);
         videoPlayer.setTopContainerView(mTitleContainerView);
@@ -72,6 +77,17 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+        mTitleContainerView.findViewById(R.id.fullscreen).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOrientationUtils.resolveByClick();
+                if (mOrientationUtils.getScreenType() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                    CommonUtil.showNavKey(context, mSystemUiVisibility);
+                } else {
+                    CommonUtil.hideNavKey(context);
+                }
             }
         });
         PigAv pigAv = (PigAv) getIntent().getSerializableExtra(Keys.KEY_INTENT_PIG_AV_ITEM);
