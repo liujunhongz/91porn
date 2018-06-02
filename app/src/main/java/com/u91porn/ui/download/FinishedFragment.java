@@ -154,7 +154,8 @@ public class FinishedFragment extends MvpFragment<DownloadView, DownloadPresente
                 uri = Uri.fromFile(file);
             }
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(uri, "pigAvVideoUrl/mp4");
+//            intent.setDataAndType(uri, "pigAvVideoUrl/mp4");
+            intent.setDataAndType(uri, "video/mp4");
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

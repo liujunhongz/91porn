@@ -1,15 +1,9 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 26
-
-
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -25,7 +19,8 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.devbrackets.android:exomedia:4.1.0'
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    def supportLibraryVersion = rootProject.ext.supportLibraryVersion
+    compileOnly 'com.android.support:appcompat-v7:' + supportLibraryVersion
+    api 'com.devbrackets.android:exomedia:4.1.0'
 }

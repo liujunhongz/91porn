@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.devbrackets.android.exomedia.listener.OnPreparedListener;
 import com.flymegoc.exolibrary.widget.ExoVideoControlsMobile;
@@ -27,7 +28,6 @@ import com.u91porn.data.model.PigAv;
 import com.u91porn.data.model.PigAvVideo;
 import com.u91porn.ui.MvpActivity;
 import com.u91porn.utils.DialogUtils;
-import com.u91porn.utils.GlideApp;
 import com.u91porn.utils.constants.Keys;
 
 import java.util.List;
@@ -97,6 +97,7 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
         playerView.setLayoutParams(layoutParams);
     }
 
+
     @Override
     public void onPrepared() {
         videoPlayer.start();
@@ -154,7 +155,7 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
     @Override
     public void playVideo(PigAvVideo pigAvVideo) {
         String url = pigAvVideo.getFile();
-        GlideApp.with(context).load(pigAvVideo.getImage()).into(videoPlayer.getPreviewImageView());
+        Glide.with(context).load(pigAvVideo.getImage()).into(videoPlayer.getPreviewImageView());
         if (TextUtils.isEmpty(url) && pigAvVideo.getSources() != null && pigAvVideo.getSources().size() > 0) {
             url = pigAvVideo.getSources().get(0).getFile();
         }
@@ -213,4 +214,5 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
             alertDialog.dismiss();
         }
     }
+
 }
