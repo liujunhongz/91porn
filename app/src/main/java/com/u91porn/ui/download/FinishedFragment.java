@@ -147,11 +147,11 @@ public class FinishedFragment extends MvpFragment<DownloadView, DownloadPresente
         File file = new File(unLimit91PornItem.getDownLoadPath());
         if (file.exists()) {
             Uri uri;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                uri = FileProvider.getUriForFile(context.getApplicationContext(), "com.u91porn.fileprovider", file);
-            } else {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                uri = FileProvider.getUriForFile(context.getApplicationContext(), "com.u91porn.fileprovider", file);
+//            } else {
                 uri = Uri.fromFile(file);
-            }
+//            }
 //            Intent intent = new Intent(Intent.ACTION_VIEW);
 //            intent.setDataAndType(uri, "91porn/mp4");
 //            intent.setDataAndType(uri, "video/mp4");

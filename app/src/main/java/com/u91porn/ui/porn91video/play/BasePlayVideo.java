@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
@@ -31,7 +30,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.rubensousa.floatingtoolbar.FloatingToolbar;
 import com.helper.loadviewhelper.help.OnLoadViewListener;
 import com.helper.loadviewhelper.load.LoadViewHelper;
-import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -69,6 +67,8 @@ import butterknife.ButterKnife;
 public abstract class BasePlayVideo extends MvpActivity<PlayVideoView, PlayVideoPresenter> implements PlayVideoView {
 
     private final String TAG = BasePlayVideo.class.getSimpleName();
+    private static int showStatus = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;//| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;//View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+    private static int hideStatus = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN;//| View.SYSTEM_UI_FLAG_FULLSCREEN;//View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGAT
 
     @BindView(R.id.recyclerView_video_comment)
     RecyclerView recyclerViewVideoComment;
@@ -130,7 +130,7 @@ public abstract class BasePlayVideo extends MvpActivity<PlayVideoView, PlayVideo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base_play_video);
         ButterKnife.bind(this);
-        setVideoViewHeight(videoplayerContainer);
+        //setVideoViewHeight(videoplayerContainer);
         initPlayerView();
         unLimit91PornItem = (UnLimit91PornItem) getIntent().getSerializableExtra(Keys.KEY_INTENT_UNLIMIT91PORNITEM);
 
@@ -686,9 +686,12 @@ public abstract class BasePlayVideo extends MvpActivity<PlayVideoView, PlayVideo
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE || newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_USER) {
             //这里没必要，因为我们使用的是setColorForSwipeBack，并不会有这个虚拟的view，而是设置的padding
-            StatusBarUtil.hideFakeStatusBarView(this);
+//            StatusBarUtil.hideFakeStatusBarView(this);
+
+            coordinator.setVisibility(View.GONE);
         } else if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-            setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
+//            setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            coordinator.setVisibility(View.VISIBLE);
         }
     }
 }

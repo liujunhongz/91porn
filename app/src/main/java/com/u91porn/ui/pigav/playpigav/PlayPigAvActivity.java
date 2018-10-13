@@ -4,7 +4,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jaeger.library.StatusBarUtil;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.u91porn.R;
@@ -34,9 +32,9 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import tv.lycam.player.StandardPlayer;
-import tv.lycam.player.utils.CommonUtil;
-import tv.lycam.player.utils.OrientationUtils;
+import top.bingoz.player.StandardPlayer;
+import top.bingoz.player.utils.CommonUtil;
+import top.bingoz.player.utils.OrientationUtils;
 
 /**
  * @author flymegoc
@@ -69,6 +67,7 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
         //setVideoViewHeight(playContainer);
         initDialog();
         mTitleContainerView = View.inflate(this, R.layout.item_top_default, null);
+        videoPlayer.enableCached(false);
         videoPlayer.setTopContainerView(mTitleContainerView);
         mThumbnailView = new ImageView(this);
         videoPlayer.setThumbImageView(mThumbnailView);
@@ -162,9 +161,11 @@ public class PlayPigAvActivity extends MvpActivity<PlayPigAvView, PlayPigAvPrese
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE || newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_USER) {
             //这里没必要，因为我们使用的是setColorForSwipeBack，并不会有这个虚拟的view，而是设置的padding
-            StatusBarUtil.hideFakeStatusBarView(this);
+//            StatusBarUtil.hideFakeStatusBarView(this);
+            recyclerView.setVisibility(View.GONE);
         } else if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-            setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
+//            setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            recyclerView.setVisibility(View.VISIBLE);
         }
     }
 

@@ -77,7 +77,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.colorPrimary));
     }
 
     /**

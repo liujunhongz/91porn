@@ -70,7 +70,7 @@
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">2</item>
-        <item name="android:shadowColor">?colorAccent</item>
+        <item name="android:shadowColor">@color/colorAccent</item>
     </style>
 
     <style name="ToolbarTextAppearance.Title">
@@ -83,7 +83,7 @@
 
     <style name="MyToolbar">
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="android:background">?colorPrimary</item>
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 
     <style name="AppFullScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">

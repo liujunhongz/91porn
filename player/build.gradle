@@ -26,9 +26,9 @@ dependencies {
     def supportLibraryVersion = rootProject.ext.supportLibraryVersion
     implementation 'com.android.support:appcompat-v7:' + supportLibraryVersion
 
-    api(name: 'alivc', ext: 'aar')
 //    api project(':alivc')
 
-    implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.4'
-
+    // 播放器库
+    api 'top.bingoz:player:1.1'
 }
+

@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import com.u91porn.R;
 
-import tv.lycam.player.StandardPlayer;
-import tv.lycam.player.utils.CommonUtil;
-import tv.lycam.player.utils.OrientationUtils;
+import top.bingoz.player.StandardPlayer;
+import top.bingoz.player.utils.CommonUtil;
+import top.bingoz.player.utils.OrientationUtils;
 
 /**
  * @author su
@@ -101,6 +101,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
+
     }
 
     @Override

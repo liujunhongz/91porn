@@ -16,9 +16,8 @@ import com.u91porn.utils.GlideApp;
 
 import java.io.File;
 
-import tv.lycam.player.StandardPlayer;
-import tv.lycam.player.utils.CommonUtil;
-import tv.lycam.player.utils.OrientationUtils;
+import top.bingoz.player.StandardPlayer;
+import top.bingoz.player.utils.OrientationUtils;
 
 /**
  * @author flymegoc
@@ -30,11 +29,6 @@ public class IjkMediaPlayerActivity extends BasePlayVideo {
     private View mTitleContainerView;
     private ImageView mThumbnailView;
     OrientationUtils mOrientationUtils;
-    private int mSystemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +46,11 @@ public class IjkMediaPlayerActivity extends BasePlayVideo {
             @Override
             public void onClick(View v) {
                 mOrientationUtils.resolveByClick();
-                if (mOrientationUtils.getScreenType() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-                    CommonUtil.showNavKey(context, mSystemUiVisibility);
-                } else {
-                    CommonUtil.hideNavKey(context);
-                }
             }
         });
+
+
+        videoPlayer.enableCached(false);
         videoPlayer.setTopContainerView(mTitleContainerView);
 
         mThumbnailView = new ImageView(this);

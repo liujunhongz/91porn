@@ -29,7 +29,7 @@ android {
     }
 
     repositories {
-        flatDir { dirs 'libs', '../player/libs' }
+        flatDir { dirs 'libs' }
     }
 }
 
@@ -55,8 +55,9 @@ dependencies {
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.3'
 
     //leakcanary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+//    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    implementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -134,5 +135,6 @@ dependencies {
 
     implementation 'com.jakewharton.timber:timber:4.7.0'
 //    implementation project(':exolibrary')
+
     implementation project(':player')
 }

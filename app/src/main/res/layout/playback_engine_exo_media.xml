@@ -14,10 +14,9 @@
             android:background="@android:color/black" />
     -->
 
-    <tv.lycam.player.StandardPlayer
+    <top.bingoz.player.StandardPlayer
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"
-        app:player="ijk" />
+        android:background="@android:color/black" />
 </merge>

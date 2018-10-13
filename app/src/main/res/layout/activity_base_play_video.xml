@@ -7,12 +7,15 @@
     android:background="@color/common_background"
     tools:context="com.u91porn.ui.porn91video.play.BasePlayVideo">
 
-    <FrameLayout
+    <top.bingoz.player.ratio.RatioFrameLayout
         android:id="@+id/videoplayer_container"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="match_parent"
         android:background="@color/black"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        app:ratioHeight="9"
+        app:ratioWidth="16"
+        app:reference="width" />
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator"
@@ -149,8 +152,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:theme="@style/MyEditText"
-                android:hint="@string/comment_video_hint_tip" />
+                android:hint="@string/comment_video_hint_tip"
+                android:theme="@style/MyEditText" />
 
             <ImageView
                 android:id="@+id/iv_video_comment_send"

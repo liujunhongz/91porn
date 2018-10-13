@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context="com.u91porn.ui.pigav.playpigav.PlayPigAvActivity">
 
-    <tv.lycam.player.ratio.RatioFrameLayout
+    <top.bingoz.player.ratio.RatioFrameLayout
         android:id="@+id/play_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +17,7 @@
         app:reference="width">
 
         <include layout="@layout/playback_engine_exo_media" />
-    </tv.lycam.player.ratio.RatioFrameLayout>
+    </top.bingoz.player.ratio.RatioFrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

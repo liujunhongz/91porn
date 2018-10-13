@@ -25,9 +25,11 @@ import com.u91porn.R;
 import com.u91porn.adapter.DownloadVideoAdapter;
 import com.u91porn.data.DataManager;
 import com.u91porn.data.model.UnLimit91PornItem;
+import com.u91porn.data.model.VideoResult;
 import com.u91porn.service.DownloadVideoService;
 import com.u91porn.ui.MvpFragment;
 import com.u91porn.utils.DownloadManager;
+import com.u91porn.utils.PlaybackEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +114,13 @@ public class DownloadingFragment extends MvpFragment<DownloadView, DownloadPrese
         recyclerView.setAdapter(mDownloadAdapter);
         mDownloadAdapter.setEmptyView(R.layout.empty_view, recyclerView);
 
+        mDownloadAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                UnLimit91PornItem unLimit91PornItem = (UnLimit91PornItem) adapter.getItem(position);
+                openMp4File(unLimit91PornItem);
+            }
+        });
         mDownloadAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -142,6 +151,20 @@ public class DownloadingFragment extends MvpFragment<DownloadView, DownloadPrese
                 }
             }
         });
+
+    }
+
+    /**
+     * 调用系统播放器播放本地视频
+     *
+     * @param unLimit91PornItem item
+     */
+    private void openMp4File(UnLimit91PornItem unLimit91PornItem) {
+        VideoResult videoResult = unLimit91PornItem.getVideoResult();
+        if (videoResult != null) {
+            String title = unLimit91PornItem.getTitle();
+            PlaybackEngine.play(context, title, videoResult.getVideoUrl());
+        }
 
     }
 
