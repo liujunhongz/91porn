@@ -244,3 +244,16 @@ public static java.lang.String TABLENAME;
 ### Safe Java-JS WebView Bridge ###
 -keepclassmembers class com.u91porn.data.model.HostJsScope$RetJavaObj{ *; }
 -keepclassmembers class com.u91porn.data.model.HostJsScope{ *; }
+
+
+-keep public class top.bingoz.player.** {
+*;
+}
+
+-keep public class tv.danmaku.ijk.media.** {
+*;
+}
+
+-keep public class okio.** {
+*;
+}
